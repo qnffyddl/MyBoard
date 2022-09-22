@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+#      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+#      jdbc-url: jdbc:log4jdbc:postgresql://211.113.69.81:5432/dxcp_db
+#      username: dxcp_svc
+#      password: ENC(9NS1804Kk5dafJFVe64YCBnZJ4i8Fd+A)
+#      auto-commit: false
+#      connection-test-query: SELECT 1
+#      connection-timeout: 5000
+#      validation-timeout: 1000
+#      maximum-pool-size: 40
+#      minimum-idle: 10
+
+# application.properties
+
+spring:
+  datasource:
+    hikari:
+      maximum-pool-size: 4
+      jdbc-url: jdbc:postgresql://localhost:5432/postgres
+      username: postgres
+      password: 1234
+      driver-class-name: org.postgresql.Driver
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+
+mybatis:
+  type-aliases-package: com.example.board_0914.dto
