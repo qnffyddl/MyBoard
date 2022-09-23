@@ -23,3 +23,4 @@ public class BoardDTO {
   private String filePath;
   private String fileMount;
 }
+//Dto 데이터 전송 그냥 형식

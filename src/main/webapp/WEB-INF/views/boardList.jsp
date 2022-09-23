@@ -41,8 +41,8 @@
                 </tbody>
                 <tr>
                     <c:forEach items="${boardList}" var="list" varStatus="status">
-                    <td><a href=${list.boardNo}>${fn:length(boardList)-status.index}</a></td>
-                    <td><a href=${list.boardNo}>${list.boardTitle}</a></td>
+                    <td><a href="/board/boardDetail?boardNo=${list.boardNo}">${fn:length(boardList)-status.index}</a></td>
+                    <td><a href="/board/boardDetail?boardNo=${list.boardNo}">${list.boardTitle}</a></td>
                     <td>${list.boardWriter}</td>
                     <td>${list.boardRegdate}</td>
                     <td>
@@ -52,7 +52,7 @@
                 </c:forEach>
                 </tbody>
                 <div>
-                    <button type="button" class="btn btn-outline-info" onclick="location.href='boardResist'">등록</button>
+                    <button type="button" class="btn btn-outline-info" onclick="location.href='boardWrite'">등록</button>
                 </div>
             </table>
         </div>
