@@ -22,6 +22,22 @@ public class boardServiceImpl implements boardService {
   }
 
   public void boardWrite(BoardDTO boardDTO) throws Exception {
-     boardMapper.boardWrite(boardDTO);
+    boardMapper.boardWrite(boardDTO);
   }
+  public void boardViewCountUpdate(int boardNo) throws Exception {
+     boardMapper.boardViewCountUpdate(boardNo);
+  }
+
+  public void boardUpdate(BoardDTO boardDTO) throws Exception {
+    boardMapper.boardUpdate(boardDTO);
+  }
+
+  public void boardDelete(BoardDTO boardDTO) throws Exception {
+    boardMapper.boardDelete(boardDTO);
+  }
+
+  public BoardDTO boardPwPop(BoardDTO boardDTO) {
+    return boardMapper.boardPwPop(boardDTO);
+  }
+
 }

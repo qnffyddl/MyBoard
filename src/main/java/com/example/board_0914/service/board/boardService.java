@@ -11,6 +11,15 @@ public interface boardService {
   BoardDTO boardDetail(int boardNo) throws Exception;
 
   void boardWrite(BoardDTO boardDTO) throws Exception;
+
+  void boardUpdate(BoardDTO boardDTO) throws Exception;
+
+  void boardDelete(BoardDTO boardDTO) throws Exception;
+
+  void boardViewCountUpdate(int boardNo) throws Exception;
+
+  BoardDTO boardPwPop(BoardDTO boardDTO) throws Exception;
+
 }
 
 //별다른 내용을 담지 않고 간략하게 서비스에 대해서 볼수 있게(추상화)

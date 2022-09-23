@@ -46,4 +46,28 @@
                  )
     </insert>
 
+    <update id="boardUpdate" parameterType="boardDTO">
+        UPDATE BOARDLIST
+        SET BOARD_MODIDATE = NOW()
+          , BOARD_TITLE = #{boardTitle}
+          , BOARD_CONTENT = #{boardContent}
+        where board_no = #{boardNo}
+    </update>
+
+    <update id="boardViewCountUpdate" parameterType="int">
+        UPDATE BoardList
+        SET BOARD_VIEWCOUNT = BOARD_VIEWCOUNT + 1
+        WHERE BOARD_NO = #{boardNo}
+    </update>
+
+    <select id="boardPwPop"  parameterType="int" resultType="boardDTO">
+        SELECT BOARD_PW
+        FROM BoardList
+        WHERE BOARD_NO = #{boardNo}
+    </select>
+
+    <update id="boardDelete" parameterType="boardDTO">
+        UPDATE BoardList SET BOARD_DELETEYN = 'Y'
+        WHERE BOARD_NO =#{boardNo}
+    </update>
 </mapper>

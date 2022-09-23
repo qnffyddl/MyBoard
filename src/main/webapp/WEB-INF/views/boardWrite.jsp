@@ -66,8 +66,8 @@
         var formData = new FormData();
         formData.append("boardTitle", boardTitle);
         formData.append("boardContent", boardContent);
-        formData.append("boardPw", boardTitle);
-        formData.append("boardWriter", boardContent);
+        formData.append("boardPw", boardPw);
+        formData.append("boardWriter", boardWriter);
 
         //ajax로 파일전송 폼데이터를 보내기위해
         //enctype, processData, contentType 이 세가지를 반드시 세팅해야한다.

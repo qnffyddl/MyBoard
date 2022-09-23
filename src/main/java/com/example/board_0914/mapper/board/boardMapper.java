@@ -11,5 +11,12 @@ public interface boardMapper {
   BoardDTO boardDetail(int boardNo);
 
   void boardWrite(BoardDTO boardDTO);
+
+  void boardUpdate(BoardDTO boardDTO);
+
+  void boardDelete(BoardDTO boardDTO);
+  void boardViewCountUpdate(int boardNo);
+
+  BoardDTO boardPwPop(BoardDTO boardDTO);
 //중간 선언
 }

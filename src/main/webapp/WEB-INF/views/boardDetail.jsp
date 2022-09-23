@@ -24,22 +24,27 @@
     <meta charset="UTF-8">
     <title>게시글 상세화면</title>
     <script>
+        //리스트로 이동
+        function goToList() {
+            location.href = "./boardList";
+        }
+
         //저장 button
-        function showPopupSave(){
+        function boardPwPop(Gubun){
             //validation
-            // let titleVal = document.getElementById("boardTitle");
-            // if (titleVal.value == "") {
-            //     alert("제목을 입력하세요.");
-            //     titleVal.focus();
-            //     return false;
-            // }
-            //
-            // let contentVal = document.getElementById("boardContent");
-            // if (contentVal.value == "") {
-            //     alert("내용을 입력하세요.");
-            //     contentVal.focus();
-            //     return false;
-            // }
+            let titleVal = document.getElementById("boardTitle");
+            if (titleVal.value == "") {
+                alert("제목을 입력하세요.");
+                titleVal.focus();
+                return false;
+            }
+
+            let contentVal = document.getElementById("boardContent");
+            if (contentVal.value == "") {
+                alert("내용을 입력하세요.");
+                contentVal.focus();
+                return false;
+            }
 
             let targetTitle = "new_win";
             let popupWidth = 500;
@@ -56,10 +61,19 @@
 
             let top = (screen.availHeight - popupHeight) / 2 - 10;
 
-            let url = "/board/boardPwPopUp";
+            let url = "/board/boardPwPop";
             let options = 'resizable=no,left=' + left + ',top=' + top +', width=' + popupWidth+ ',height=' + popupHeight +',menubar=no, status=no, toolbar=no, location=no, scrollbars=yes';
+
+            $("#PageGubun").val("");
+
+            if(Gubun == "U") {
+                $("#PageGubun").val("U");
+            }
+            else if(Gubun == "D"){
+                $("#PageGubun").val("D");
+            }
             boardPwPopUp = window.open(url,targetTitle,options);
-            boardForm.action = "/board/boardPwPopUp";
+            boardForm.action = "/board/boardPwPop";
             boardForm.target = "new_win";
             boardForm.submit();
         }
@@ -89,9 +103,12 @@
         <input id ="boardPw" type="hidden" class="form-control" name="boardPw" value="${boardDetail.boardPw}"/>
     </div>
 
+    <input id ="PageGubun" type="hidden" class="form-control" name="PageGubun"/>
 
-    <button id="btn_save" type="button" class="btn btn-outline-info" onclick="showPopupSave();">저장</button>
-    <button id="btn_delete" type="button" class="btn btn-outline-info">삭제</button>
+
+
+    <button id="btn_save" type="button" class="btn btn-outline-info" onclick="boardPwPop('U')">저장</button>
+    <button id="btn_delete" type="button" class="btn btn-outline-info" onclick="boardPwPop('D')">삭제</button>
     <button type="button" class="btn btn-outline-info"><a href="/board/boardList">돌아가기</a></button>
 </form>
 </body>

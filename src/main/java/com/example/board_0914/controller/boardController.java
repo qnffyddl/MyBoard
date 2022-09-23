@@ -1,28 +1,27 @@
 package com.example.board_0914.controller;
 
+import com.example.board_0914.dto.BoardDTO;
 import com.example.board_0914.service.board.boardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/board")
 public class boardController {
 
-  @Autowired//boardService와 연동해주기 위해
+  @Autowired //boardService와 연동해주기 위해
   private boardService boardService;
 
   //리스트화면
-  @RequestMapping("/boardList")
-  //메소드 줄수가 있다.
+  @RequestMapping("/boardList") //메소드 줄수가 있다.
+
   public String boardList(Model model){
     try {
-      model.addAttribute("boardList", boardService.boardDTOList());
-      //model 객체를 파라미터로 받아서 데이터를 넘긴다.
+      model.addAttribute("boardList", boardService.boardDTOList());//model 객체를 파라미터로 받아서 데이터를 넘긴다.
+
     } catch (Exception e) {
       //log.error(e.toString());
     }
@@ -34,7 +33,8 @@ public class boardController {
   public String boardDetail(int boardNo, Model model){
     try {
       model.addAttribute("boardDetail", boardService.boardDetail(boardNo));
-      //model 객체를 파라미터로 받아서 데이터를 넘긴다.
+      boardService.boardViewCountUpdate(boardNo);//model 객체를 파라미터로 받아서 데이터를 넘긴다.
+
     } catch (Exception e) {
       //log.error(e.toString());
     }
@@ -47,25 +47,20 @@ public class boardController {
     return "boardWrite";
   }
 
-  //Test 단순 화면 이동
-  @GetMapping("/test")
-  public String test() {
+  //게시판 수정 팝업
+  @PostMapping("/boardPwPop")
+  public String boardPwPop(BoardDTO boardDto, Model model){
 
-    return "test";
-  }
-
-  @PostMapping("/test")
-  @ResponseBody
-  public Object testAjax(@RequestBody String boardTitle) {
-    // ex_1
-    String text = "답변";
-
-    // ex_2
-    Map<String, String> map = new HashMap<String,String>();
-
-    map.put("title", boardTitle);
-
-
-    return map;
+    try {
+      model.addAttribute("boardNo", boardDto.getBoardNo());
+      model.addAttribute("boardTitle", boardDto.getBoardTitle());
+      model.addAttribute("boardContent", boardDto.getBoardContent());
+      model.addAttribute("boardWriter", boardDto.getBoardWriter());
+      model.addAttribute("boardPw", boardDto.getBoardPw());
+      model.addAttribute("PageGubun", boardDto.getPageGubun());//화면으로 모델에 이 이름으로 값을 저장
+    } catch (Exception e) {
+      //log.error(e.toString());
+    }
+    return "boardPwPop";
   }
 }

@@ -30,7 +30,7 @@
     </div>
 
     <button id="btn_enter" type="button" class="btn btn-outline-info">확인</button>
-    <button type="button" class="btn btn-outline-info"><a href="/board/boardUpdate?boardNo=<%=request.getParameter("boardNo")%>">취소</a></button>
+    <button type="button" class="btn btn-outline-info"><a href="/board/boardDetail?boardNo=<%=request.getParameter("boardNo")%>">취소</a></button>
 </form>
 </body>
 <script type="text/javascript">
@@ -55,13 +55,12 @@
         //jquery의 append를 통해서 프로퍼티에 바인딩이 가능하도록 세팅한다..append()선택된 요소의 마지막에 새로운 요소나 콘텐츠를 추가한다.
         let formData = new FormData();
         formData.append("boardNo", boardNo);
+        formData.append("boardTitle", "${boardTitle}");
+        formData.append("boardContent", "${boardContent}");
+        formData.append("boardPw", "${boardPw}");
+        formData.append("boardWriter", "${boardWriter}");
+        formData.append("PageGubun", "${PageGubun}");
 
-        let UpdateData = new FormData();
-        UpdateData.append("boardNo", boardNo);
-        UpdateData.append("boardTitle", "${boardTitle}");
-        UpdateData.append("boardContent", "${boardContent}");
-        UpdateData.append("boardPw", "${boardPw}");
-        UpdateData.append("boardWriter", "${boardWriter}");
         //ajax로 파일전송 폼데이터를 보내기위해
         //enctype, processData, contentType 이 세가지를 반드시 세팅해야한다.
 
@@ -75,20 +74,38 @@
             cache : false,
             success : function(res) {
                  if(res.data.boardPw == pwVal){
+                        let pageUrl;
+                     if("${PageGubun}" == "U"){
+                         pageUrl = "./boardUpdateAjax";
+                     }
+                     else if("${PageGubun}" == "D"){
+                         pageUrl = "./boardDeleteAjax";
+                     }
                     $.ajax({
                         type: 'POST',
                         enctype: 'multipart/form-data',
-                        url : "./boardUpdateAjax",
-                        data : UpdateData,
+                        url : pageUrl,
+                        data : formData,
                         processData : false,
                         contentType : false,
                         cache : false,
                         success : function(res) {
-                            alert("저장되었습니다!");
+                            if("${PageGubun}" == "U"){
+                                alert("저장되었습니다!");
+                            }
+                        else if("${PageGubun}" == "D") {
+                                alert("삭제되었습니다!");
+                            }
                             window.close();
+                            opener.parent.goToList();
                         },
                         error :  function(res) {
-                            alert('업데이트 실패');
+                            if("${PageGubun}" == "U"){
+                                alert('저장 실패');
+                            }
+                            else if("${PageGubun}" == "D") {
+                                alert('삭제 실패');
+                            }
                         }
                     });
                 }else{
