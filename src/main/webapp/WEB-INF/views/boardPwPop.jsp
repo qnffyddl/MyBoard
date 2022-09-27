@@ -30,23 +30,19 @@
     </div>
 
     <button id="btn_enter" type="button" class="btn btn-outline-info">확인</button>
-    <button type="button" class="btn btn-outline-info"><a href="/board/boardDetail?boardNo=<%=request.getParameter("boardNo")%>">취소</a></button>
+<%--    <button type="button" class="btn btn-outline-info"><a href="/board/boardDetail?boardNo=<%=request.getParameter("boardNo")%>">취소</a></button>--%>
 </form>
 </body>
 <script type="text/javascript">
 
     //button 등록
     $(document).on('click', '#btn_enter', function(e) {
-
-        //validation
-        let pwVal = document.getElementById("password").value;
+        let pwVal = document.getElementById("password").value;//입력된 비번 값을 가지고
         let boardNo = <%=request.getParameter("boardNo")%>;
 
-        if (pwVal.value == "") {
-            alert("비밀번호를 입력하세요.");
-            pwVal.focus();
-            return false;
-        }
+
+        <%--console.log("기존: " + ${boardTitle});--%>
+        <%--console.log("변환: "+ ${BoardDTO.boardTitle});--%>
 
         const password = $("#password").val().trim();
 
@@ -61,6 +57,7 @@
         formData.append("boardWriter", "${boardWriter}");
         formData.append("PageGubun", "${PageGubun}");
 
+        //dto에 필수 값으로 값을 넘겨줘야해서 다른 값들도 넣어줬습니다.
         //ajax로 파일전송 폼데이터를 보내기위해
         //enctype, processData, contentType 이 세가지를 반드시 세팅해야한다.
 
@@ -108,7 +105,8 @@
                             }
                         }
                     });
-                }else{
+                }
+                 else{
                     alert("비밀번호 확인 실패");
                 }
 

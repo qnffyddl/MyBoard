@@ -23,61 +23,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <meta charset="UTF-8">
     <title>게시글 상세화면</title>
-    <script>
-        //리스트로 이동
-        function goToList() {
-            location.href = "./boardList";
-        }
-
-        //저장 button
-        function boardPwPop(Gubun){
-            //validation
-            let titleVal = document.getElementById("boardTitle");
-            if (titleVal.value == "") {
-                alert("제목을 입력하세요.");
-                titleVal.focus();
-                return false;
-            }
-
-            let contentVal = document.getElementById("boardContent");
-            if (contentVal.value == "") {
-                alert("내용을 입력하세요.");
-                contentVal.focus();
-                return false;
-            }
-
-            let targetTitle = "new_win";
-            let popupWidth = 500;
-            let popupHeight = 300;
-
-            // 듀얼 모니터 기준
-            let left = (screen.availWidth - popupWidth) / 2;
-            if( window.screenLeft < 0){
-                left += window.screen.width*-1;
-            }
-            else if ( window.screenLeft > window.screen.width ){
-                left += window.screen.width;
-            }
-
-            let top = (screen.availHeight - popupHeight) / 2 - 10;
-
-            let url = "/board/boardPwPop";
-            let options = 'resizable=no,left=' + left + ',top=' + top +', width=' + popupWidth+ ',height=' + popupHeight +',menubar=no, status=no, toolbar=no, location=no, scrollbars=yes';
-
-            $("#PageGubun").val("");
-
-            if(Gubun == "U") {
-                $("#PageGubun").val("U");
-            }
-            else if(Gubun == "D"){
-                $("#PageGubun").val("D");
-            }
-            boardPwPopUp = window.open(url,targetTitle,options);
-            boardForm.action = "/board/boardPwPop";
-            boardForm.target = "new_win";
-            boardForm.submit();
-        }
-    </script>
 </head>
 <body>
 <form name="boardForm" class="center" method="post">
@@ -105,11 +50,64 @@
 
     <input id ="PageGubun" type="hidden" class="form-control" name="PageGubun"/>
 
-
-
     <button id="btn_save" type="button" class="btn btn-outline-info" onclick="boardPwPop('U')">저장</button>
     <button id="btn_delete" type="button" class="btn btn-outline-info" onclick="boardPwPop('D')">삭제</button>
     <button type="button" class="btn btn-outline-info"><a href="/board/boardList">돌아가기</a></button>
 </form>
+<script>
+    //리스트로 이동
+    function goToList() {
+        location.href = "./boardList";
+    }
+
+    //저장 button
+    function boardPwPop(Gubun){
+        //validation
+        let titleVal = document.getElementById("boardTitle");
+        if (titleVal.value == "") {
+            alert("제목을 입력하세요.");
+            titleVal.focus();
+            return false;
+        }
+
+        let contentVal = document.getElementById("boardContent");
+        if (contentVal.value == "") {
+            alert("내용을 입력하세요.");
+            contentVal.focus();
+            return false;
+        }
+
+        let targetTitle = "new_win";
+        let popupWidth = 500;
+        let popupHeight = 300;
+
+        // 듀얼 모니터 기준
+        let left = (screen.availWidth - popupWidth) / 2;
+        if( window.screenLeft < 0){
+            left += window.screen.width*-1;
+        }
+        else if ( window.screenLeft > window.screen.width ){
+            left += window.screen.width;
+        }
+
+        let top = (screen.availHeight - popupHeight) / 2 - 10;
+
+        let url = "/board/boardPwPop";
+        let options = 'resizable=no,left=' + left + ',top=' + top +', width=' + popupWidth+ ',height=' + popupHeight +',menubar=no, status=no, toolbar=no, location=no, scrollbars=yes';
+
+        $("#PageGubun").val("");//초기화
+
+        if(Gubun == "U") {
+            $("#PageGubun").val("U");
+        }
+        else if(Gubun == "D"){
+            $("#PageGubun").val("D");
+        }
+        boardPwPopUp = window.open(url,targetTitle,options);
+        boardForm.action = "/board/boardPwPop";
+        boardForm.target = "new_win";
+        boardForm.submit();
+    }
+</script>
 </body>
 </html>

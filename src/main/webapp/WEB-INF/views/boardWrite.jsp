@@ -50,11 +50,42 @@
 </body>
 
 <script type="text/javascript">
+
+
     //button 등록
     $(document).on('click', '#btn_register', function(e) {
+        //validation
+        let titleVal = document.getElementById("boardTitle");
+        if (titleVal.value == "") {
+            alert("제목을 입력하세요.");
+            titleVal.focus();
+            return false;
+        }
+
+        let contentVal = document.getElementById("boardContent");
+        if (contentVal.value == "") {
+            alert("내용을 입력하세요.");
+            contentVal.focus();
+            return false;
+        }
+
+        let pwVal = document.getElementById("boardPw");
+        if (pwVal.value == "") {
+            alert("비밀번호를 입력하세요.");
+            pwVal.focus();
+            return false;
+        }
+
+        let writerVal = document.getElementById("boardWriter");
+        if (writerVal.value == "") {
+            alert("작성자를 입력하세요.");
+            writerVal.focus();
+            return false;
+        }
         //데이터를 담아내는 부분 상수 const로
         //jquery val() : Form Element 의 값을 받아오는데 쓰인다. (주로 input 이나 textarea 정도?)- 주의해야할 점은 Form Element 이외의 값은 받아오질 못한다는 점.
         //문자열 좌우에서 공백을 제거하는 함수가 trim() 함수 입니다.
+        //input에 들어온 값을 넣어
         const boardTitle = $("#boardTitle").val().trim();
         const boardContent = $("#boardContent").val().trim();
         const boardPw = $("#boardPw").val().trim();

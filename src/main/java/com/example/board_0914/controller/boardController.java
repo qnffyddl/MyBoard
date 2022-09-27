@@ -15,12 +15,13 @@ public class boardController {
   @Autowired //boardService와 연동해주기 위해
   private boardService boardService;
 
-  //리스트화면
+  //1.리스트화면
   @RequestMapping("/boardList") //메소드 줄수가 있다.
 
   public String boardList(Model model){
     try {
       model.addAttribute("boardList", boardService.boardDTOList());//model 객체를 파라미터로 받아서 데이터를 넘긴다.
+      //model.addAttribute("boardList", null);// 아무것도 없을 때 예외처리해야함.
 
     } catch (Exception e) {
       //log.error(e.toString());
@@ -28,7 +29,13 @@ public class boardController {
     return "boardList";
   }
 
-  //상세화면
+  //2.등록화면(단순화면이동)
+  @RequestMapping("/boardWrite")
+  public String boardWrite(){
+    return "boardWrite";
+  }
+
+  //3.상세화면
   @RequestMapping("/boardDetail")
   public String boardDetail(int boardNo, Model model){
     try {
@@ -41,17 +48,13 @@ public class boardController {
     return "boardDetail";
   }
 
-  //등록화면(단순화면이동)
-  @RequestMapping("/boardWrite")
-  public String boardWrite(){
-    return "boardWrite";
-  }
-
-  //게시판 수정 팝업
+  
+  //4.게시판 수정 PW팝업
   @PostMapping("/boardPwPop")
   public String boardPwPop(BoardDTO boardDto, Model model){
 
     try {
+      // model.addAttribute("BoardDTO", boardDto);
       model.addAttribute("boardNo", boardDto.getBoardNo());
       model.addAttribute("boardTitle", boardDto.getBoardTitle());
       model.addAttribute("boardContent", boardDto.getBoardContent());

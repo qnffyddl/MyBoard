@@ -16,6 +16,8 @@ public class BoardRestController {
   @Autowired
   private boardService boardService;
 
+
+//2.등록요청시 JSP ajax 타는 부분 개인정보 있으니 POST
   @PostMapping("/boardWriteAjax")
   public ResponseVO boardWriteAjax(@Valid BoardDTO boardDTO) {
 
@@ -29,6 +31,7 @@ public class BoardRestController {
     return ResponseVO.create(null, ResponseVO.SUCCESS_CODE, "저장되었습니다.");
   }
 
+  //4.수정요청시 JSP ajax 타는 부분
   @PostMapping("/boardUpdateAjax")
   public ResponseVO boardUpdateAjax(@Valid BoardDTO boardDTO) {
 
@@ -43,6 +46,7 @@ public class BoardRestController {
 
   }
 
+  //5.삭제 요청시 JSP ajax 타는 부분
   @PostMapping("/boardDeleteAjax")
   public ResponseVO boardDeleteAjax(@Valid BoardDTO boardDTO) {
 
@@ -53,10 +57,11 @@ public class BoardRestController {
       return ResponseVO.error(e.getMessage());
     }
 
-    return ResponseVO.create(null, ResponseVO.SUCCESS_CODE, "삭제되었습니다.");
+     return ResponseVO.create(null, ResponseVO.SUCCESS_CODE, "삭제되었습니다.");
 
   }
 
+  //비밀번호 입력
   @PostMapping("/boardPwAjax")
   public ResponseVO boardPwAjax(BoardDTO boardDTO){
 
