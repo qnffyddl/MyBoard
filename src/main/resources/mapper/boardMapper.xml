@@ -12,11 +12,26 @@
 
     <!--1.조회-->
     <select id="boardDTOList"  resultType="BoardDTO">
-        SELECT * FROM
-        BOARDLIST A FULL JOIN FILE B
-            ON A.BOARD_NO = B.BOARD_NO_FK
-        WHERE A.BOARD_DELETEYN = 'N'
-        ORDER BY BOARD_NO DESC
+        SELECT *
+        FROM(
+                SELECT BOARD_NO
+                     , BOARD_TITLE
+                     , BOARD_CONTENT
+                     , BOARD_WRITER
+                     , BOARD_REGDATE
+                     , BOARD_VIEWCOUNT
+                     , BOARD_PW
+                     , BOARD_MODIDATE
+                     , BOARD_DELETEYN
+                     , COUNT(1) OVER() AS TOTAL_COUNT,
+                    (ROW_NUMBER() OVER()) AS ROWNUM
+                FROM BOARDLIST
+                GROUP BY BOARD_NO
+            ) A FULL JOIN FILE B
+                          ON A.BOARD_NO = B.BOARD_NO_FK
+        WHERE ROWNUM BETWEEN 11 AND 20
+          AND A.BOARD_DELETEYN = 'N'
+        ORDER BY BOARD_NO DESC;
     </select>
 
     <!--2.등록-->
@@ -24,12 +39,12 @@
         INSERT INTO BOARDLIST
         (
             BOARD_TITLE
-        , BOARD_CONTENT
-        , BOARD_WRITER
-        , BOARD_REGDATE
-        , BOARD_VIEWCOUNT
-        , BOARD_PW
-        , BOARD_DELETEYN
+            , BOARD_CONTENT
+            , BOARD_WRITER
+            , BOARD_REGDATE
+            , BOARD_VIEWCOUNT
+            , BOARD_PW
+            , BOARD_DELETEYN
         ) VALUES (
                      #{boardTitle}
                  ,  #{boardContent}
@@ -79,9 +94,28 @@
         WHERE BOARD_NO = #{boardNo}
     </select>
 
-    <!-- 게시물 총 갯수 -->
-    <select id="boardCount" resultType="BoardDTO">
-        select count(BOARD_NO) from BOARDLIST;
+    <!-- List Page CNT-->
+    <select id="boardPageAjaxList"  resultType="BoardDTO">
+        SELECT *
+        FROM(
+                SELECT BOARD_NO
+                     , BOARD_TITLE
+                     , BOARD_CONTENT
+                     , BOARD_WRITER
+                     , BOARD_REGDATE
+                     , BOARD_VIEWCOUNT
+                     , BOARD_PW
+                     , BOARD_MODIDATE
+                     , BOARD_DELETEYN
+                     , COUNT(1) OVER() AS TOTAL_COUNT,
+                    (ROW_NUMBER() OVER()) AS ROWNUM
+                FROM BOARDLIST
+                GROUP BY BOARD_NO
+            ) A FULL JOIN FILE B
+                          ON A.BOARD_NO = B.BOARD_NO_FK
+        WHERE ROWNUM BETWEEN #{startRow} AND #{endRow}
+          AND A.BOARD_DELETEYN = 'N'
+        ORDER BY BOARD_NO DESC;
     </select>
 
 </mapper>

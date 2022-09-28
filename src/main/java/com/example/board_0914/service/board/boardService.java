@@ -30,7 +30,7 @@ public interface boardService {
   //팝업
   BoardDTO boardPwPop(BoardDTO boardDTO) throws Exception;
 
-  //총 갯수
-  BoardDTO boardCount(int boardNo) throws Exception;
+  //
+  List<BoardDTO> boardPageAjaxList(BoardDTO boardDTO) throws Exception;
 
 }

@@ -30,7 +30,7 @@ public interface boardMapper {
   //팝업
   BoardDTO boardPwPop(BoardDTO boardDTO);
 
-  //총 갯수
-  BoardDTO boardCount(int boardNo);
+  //
+  List<BoardDTO> boardPageAjaxList(BoardDTO boardDTO);
 
 }

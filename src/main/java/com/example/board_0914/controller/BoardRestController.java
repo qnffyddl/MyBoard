@@ -4,11 +4,10 @@ import com.example.board_0914.dto.BoardDTO;
 import com.example.board_0914.model.ResponseVO;
 import com.example.board_0914.service.board.boardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/board")
@@ -61,20 +60,30 @@ public class BoardRestController {
 
   }
 
-  //비밀번호 입력
-  @PostMapping("/boardPwAjax")
-  public ResponseVO boardPwAjax(BoardDTO boardDTO){
+
+  @PostMapping("/boardPageAjaxList")
+  public ResponseVO boardPageAjaxList(BoardDTO boardDTO){
 
     BoardDTO boardDTOData = new BoardDTO();
+    boardDTOData.setPageIndex(boardDTO.getPage());
+
+//    int startRows = (boardDTOData.getPageSize() * (pageListNum - 1)) + 1;
+//    int endRows = (startRows - 1) +boardDTOData.getPageSize();
+//    boardDTOData.setStartRow(startRows);
+//    boardDTOData.setEndRow(endRows);
+
+    List<BoardDTO> boardList = null;
 
     try {
-      boardDTOData=boardService.boardPwPop(boardDTO);
-
+          boardList = boardService.boardPageAjaxList(boardDTOData);
+          boardList.get(0).setPage(boardDTO.getPage()); //첫번째 페이지를 불러
     } catch (Exception e) {
       return ResponseVO.error(e.getMessage());
     }
 
-    return ResponseVO.create(boardDTOData, ResponseVO.SUCCESS_CODE, "저장되었습니다.");
+    return ResponseVO.create(boardList, ResponseVO.SUCCESS_CODE, "저장되었습니다.");
   }
+
+
 }
 

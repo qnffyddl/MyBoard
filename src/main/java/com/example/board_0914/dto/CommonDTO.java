@@ -7,43 +7,19 @@ import lombok.Setter;
 @Getter
 public class CommonDTO {
 
-  private String PageGubun;
-  private int nowPage, startPage, endPage, total, cntPerPage, lastPage, start, end;
-  private int cntPage = 5;
-  public CommonDTO() {	}
-  public CommonDTO(int total, int nowPage, int cntPage) {
-    setNowPage(nowPage);
-    //현재 페이지
-    setCntPerPage(cntPerPage);
-    //페이지 당 게시글수
-    setTotal(total);
-    //게시글 총 갯수
-    calcLastPage(getTotal(), getCntPerPage());
-    //제일 마지막 페이지 계산
-    //시작 끝 페이지 계산 - 아래.
-    calcStartEndPage(getNowPage(), cntPage);
-    calcStartEnd(getNowPage(), getCntPerPage());
+  private String PageGubun;     //페이지 구분 U, D
+  private int page;             // 현재 페이지 번호
+  private int totalCount;       // 총 갯수
+  private int startRow;         // 시작페이지 번호
+  private int endRow;           // 끝 페이지 번호
+  private int pageSize = 10;         // 화면 하단에 출력할 페이지 사이즈
 
-  }
-  // 제일 마지막 페이지 계산
-  public void calcLastPage(int total, int cntPerPage) {
-    setLastPage((int) Math.ceil((double)total / (double)cntPerPage));
-  }
-  // 시작, 끝 페이지 계산
-  public void calcStartEndPage(int nowPage, int cntPage) {
-    setEndPage(((int)Math.ceil((double)nowPage / (double)cntPage)) * cntPage);
-    if (getLastPage() < getEndPage()) {
-      setEndPage(getLastPage());
-    }
-    setStartPage(getEndPage() - cntPage + 1);
-    if (getStartPage() < 1) {
-      setStartPage(1);
-    }
-  }
-  // DB 쿼리에서 사용할 start, end값 계산
-  public void calcStartEnd(int nowPage, int cntPerPage) {
-    setEnd(nowPage * cntPerPage);
-    setStart(getEnd() - cntPerPage + 1);
+  private int RowNum;
+
+  public void setPageIndex(Integer pageIndex) {
+    this.page = pageIndex == null || pageIndex == 0 ? 1: pageIndex;
+    this.startRow = (this.pageSize * (this.page - 1)) + 1 ; //11
+    this.endRow = (this.startRow - 1) + this.pageSize;  //20
   }
 
 }

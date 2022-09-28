@@ -50,8 +50,8 @@ public class boardServiceImpl implements boardService {
     return boardMapper.boardPwPop(boardDTO);
   }
 
-  //총갯수
-  public BoardDTO boardCount(int boardNo) {
-    return boardMapper.boardCount(boardNo);
+  //
+  public List<BoardDTO> boardPageAjaxList(BoardDTO boardDTO) {
+    return boardMapper.boardPageAjaxList(boardDTO);
   }
 }
