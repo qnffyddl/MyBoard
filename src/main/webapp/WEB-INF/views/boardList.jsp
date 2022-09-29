@@ -43,12 +43,13 @@
                 <tbody id="boardList">
                 <c:forEach items="${boardList}" var="list" varStatus="status">
                 <tr>
-                        <td><a href="/board/boardDetail?boardNo=${list.boardNo}">${fn:length(boardList)-status.index}</a></td>
+                        <td><a href="/board/boardDetail?boardNo=${list.boardNo}">${list.rowNum}</a></td>
                     <td><a href="/board/boardDetail?boardNo=${list.boardNo}">${list.boardTitle}</a></td>
                     <td>${list.boardWriter}</td>
                     <td>${list.boardRegdate}</td>
                     <td>
                         <c:if test="${list.fileNo ne null}"><img src="../image/free-icon-attachments-304690.png"></c:if>
+                    </td>
                     <td>${list.boardViewcount}</td>
 
                 </tr>
@@ -62,7 +63,13 @@
 
                     <span id ="paging">
                     <c:forEach begin="${startPageNum}" end="${endPageNum}" var="num">
-                                <a onclick="pageListNum(${num})">${num}</a>
+<%--                        선택시 강조처리--%>
+                        <c:if test="${num eq '1'}">
+                            <a onclick="pageListNum(${num})" style="font-weight: bold">${num}</a>
+                        </c:if>
+                        <c:if test="${num ne '1'}">
+                            <a onclick="pageListNum(${num})">${num}</a>
+                        </c:if>
                     </c:forEach>
                     </span>
                 </div>
@@ -79,8 +86,8 @@
     function pageListNum(num) { // num 총 페이지 수
 
         var formData = new FormData();
-        formData.append("page", num);
-        console.log(num);
+        formData.append("page", num); //DTO를 타고 맵핑이 되고 컨트롤러에서 받는다.
+        //console.log(num);
 
         $.ajax({
             enctype : 'multipart/form-data',
@@ -90,22 +97,25 @@
             url : "./boardPageAjaxList",
             data : formData,
             type : "POST",
-            success : function(res) {
-                let list = res.data|| [];
-                let pageSize = 10;
-                console.log(list);
-                console.log(res.data);
+            success : function(res) { //꼭 res로 안해도 됨. 결과 값을 다시 받고
+                let list = res.data|| []; // 있으면 값을 사용하고 아님 빈 객체로 사용
+                let pageSize = 10; //리스트 ROW 출력 행수
+                //console.log(list);
+                //console.log(res.data);
                 $("#boardList").empty();//비워줌
 
-                let tbody = fn_getContentsHtml(list,num);
+                let tbody = fn_getContentsHtml(list,num, res.data[0].totalCount);
                 $("#boardList").append(tbody);
                 //location.href = "./boardList";
 
-                let pervPageNum = res.data[0].page-1;
+                //하단 출력 페이지 버튼 생성
+                let pervPageNum = num-1; //이전 버튼 값
+                let nextPageNum = num+1; //다음 버튼 값
                 let pageTotal = Math.ceil(res.data[0].totalCount / pageSize);
-                let nowPageRange = Math.ceil(res.data[0].page / 10) * 10
+                let nowPageRange = Math.ceil(num / 10) * 10
                 let startPageNum =  nowPageRange - 9;
                 let endPageNum;
+
 
                 if (nowPageRange > pageTotal) {
                     endPageNum = pageTotal;
@@ -115,15 +125,29 @@
 
                 $("#paging").empty();//비워줌
 
-                for(let i = startPageNum; i < endPageNum+ 1 ; i++){
-                    console.log("반복"+i);
-                    $("#paging").append('<a onclick="pageListNum('+i+')"> '+i+'</a>'); //페이지 버튼
+                if(num >1){ //클릭해서 받아온 페이지 값이 1이면 <이전>이 없음
+                    $("#paging").prepend('<a onclick="pageListNum(1)">◀◀ </a>');//제일 처음 버튼
+
+                    $("#paging").append('<a onclick="pageListNum('+pervPageNum+')">◀</a>'); //이전버튼
+
                 }
 
-                if(res.data[0].page >1){
-                    $("#paging").prepend('<a onclick="pageListNum('+pervPageNum+')">◀</a>'); //이전버튼
+                for(let i = startPageNum; i < endPageNum+ 1 ; i++){
+                    console.log("반복"+i);
+                    //선택시 강조처리
+                    if(i == num){
+                        $("#paging").append('<a onclick="pageListNum('+i+')" style="font-weight: bold"> '+i+'</a>');
+                    }else {
+                        $("#paging").append('<a onclick="pageListNum(' + i + ')"> ' + i + '</a>'); //페이지 버튼
+                    }
                 }
-                // if(res.data[0].page != res.data[0].totalCount /10 ){}
+
+                 if(num < res.data[0].totalCount /10 ){ //클릭한 num 값이 전체 totalCount(총데이터 수 ) / pagesize(출력행수) 한게 작을때 나와야한다.
+                     $("#paging").append('<a onclick="pageListNum('+nextPageNum+')">▶</a>'); //다음버튼
+                     $("#paging").append('<a onclick="pageListNum('+pageTotal+')"> ▶▶</a>'); //제일 끝으로 버튼
+                 }
+
+
 
                 console.log("토탈"+pageTotal);
                 console.log("시작페이지"+startPageNum);
@@ -135,11 +159,17 @@
         });
     }
 
-    function fn_getContentsHtml(list,num) {
+    function fn_getContentsHtml(list,num, totalCount) {
         let contents = "";
         let imgYn = "";
+        let pageRangeLastNum= (num) * 10;
+
+        if(totalCount < pageRangeLastNum){ //205 < 210
+            pageRangeLastNum = totalCount;
+        }
+
         list.forEach((item,index) => {
-           let rowNum= (num) * 10 - (index);
+
            if(item.fileNo != null){
                imgYn = '<img src="../image/free-icon-attachments-304690.png">';
            }else{
@@ -148,7 +178,7 @@
 
            contents +=
                 `<tr>
-                <td class="num"><a href="/board/boardDetail?boardNo=\${item.boardNo}">\${rowNum}</td>
+                <td class="num"><a href="/board/boardDetail?boardNo=\${item.boardNo}">\${item.rowNum}</td>
                 <td class="center"><a href="/board/boardDetail?boardNo=\${item.boardNo}">\${item.boardTitle}</a></td>
                 <td class="center">\${item.boardWriter}</td>
                 <td class="center">\${item.boardRegdate}</td>

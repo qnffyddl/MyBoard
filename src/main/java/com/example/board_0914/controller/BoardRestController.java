@@ -30,7 +30,7 @@ public class BoardRestController {
     return ResponseVO.create(null, ResponseVO.SUCCESS_CODE, "저장되었습니다.");
   }
 
-  //4.수정요청시 JSP ajax 타는 부분
+  //4.수정요청시 JSP ajax
   @PostMapping("/boardUpdateAjax")
   public ResponseVO boardUpdateAjax(@Valid BoardDTO boardDTO) {
 
@@ -45,7 +45,7 @@ public class BoardRestController {
 
   }
 
-  //5.삭제 요청시 JSP ajax 타는 부분
+  //5.삭제 요청시 JSP ajax
   @PostMapping("/boardDeleteAjax")
   public ResponseVO boardDeleteAjax(@Valid BoardDTO boardDTO) {
 
@@ -60,23 +60,18 @@ public class BoardRestController {
 
   }
 
-
+//페이징 AJAX
   @PostMapping("/boardPageAjaxList")
   public ResponseVO boardPageAjaxList(BoardDTO boardDTO){
 
     BoardDTO boardDTOData = new BoardDTO();
-    boardDTOData.setPageIndex(boardDTO.getPage());
-
-//    int startRows = (boardDTOData.getPageSize() * (pageListNum - 1)) + 1;
-//    int endRows = (startRows - 1) +boardDTOData.getPageSize();
-//    boardDTOData.setStartRow(startRows);
-//    boardDTOData.setEndRow(endRows);
+    boardDTOData.setPageIndex(boardDTO.getPage()); //클릭한 페이지 번호 값이 들어옴.
 
     List<BoardDTO> boardList = null;
 
     try {
-          boardList = boardService.boardPageAjaxList(boardDTOData);
-          boardList.get(0).setPage(boardDTO.getPage()); //첫번째 페이지를 불러
+          boardList = boardService.boardPageAjaxList(boardDTOData); //맵퍼에 태운다.
+
     } catch (Exception e) {
       return ResponseVO.error(e.getMessage());
     }
