@@ -67,6 +67,14 @@ public class BoardRestController {
     BoardDTO boardDTOData = new BoardDTO();
     boardDTOData.setPageIndex(boardDTO.getPage()); //클릭한 페이지 번호 값이 들어옴.
 
+    if(boardDTO.getSearchField() != null){ //검색조건이 있으면 넣어줘
+      boardDTOData.setSearchField(boardDTO.getSearchField());
+    }
+
+    if(boardDTO.getSearchText() != null){ //검색어가 있으면 넣어줘
+      boardDTOData.setSearchText(boardDTO.getSearchText());
+    }
+
     List<BoardDTO> boardList = null;
 
     try {

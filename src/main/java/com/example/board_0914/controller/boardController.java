@@ -21,7 +21,7 @@ public class boardController {
   public String boardList(Model model){
     try {
       model.addAttribute("boardList", boardService.boardDTOList());//model 객체를 파라미터로 받아서 데이터를 넘긴다.
-      //model.addAttribute("boardList", null);// 아무것도 없을 때 예외처리해야함.
+      //model.addAttribute("boardList", null);// 등록된 리스트 없을 때 예외처리
 
     } catch (Exception e) {
       //log.error(e.toString());

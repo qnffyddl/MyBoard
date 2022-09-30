@@ -12,27 +12,17 @@
 
     <!--1.조회-->
     <select id="boardDTOList"  resultType="BoardDTO">
-        SELECT *
-        FROM(
-                SELECT BOARD_NO
-                     , BOARD_TITLE
-                     , BOARD_CONTENT
-                     , BOARD_WRITER
-                     , BOARD_REGDATE
-                     , BOARD_VIEWCOUNT
-                     , BOARD_PW
-                     , BOARD_MODIDATE
-                     , BOARD_DELETEYN
-                     , COUNT(1) OVER() AS TOTAL_COUNT,
-                    (ROW_NUMBER() OVER()) AS ROWNUM
-                FROM BOARDLIST
-                GROUP BY BOARD_NO
-                ORDER BY BOARD_NO DESC
+        select A.board_no,A.board_title,A.board_content,A.board_writer,A.board_regdate,A.board_viewcount,A.BOARD_DELETEYN,A.total_count,(total_count+1)-A.ROWNUM as rownum,B.*
+        from(
+                select board_no, board_title,board_content,board_writer,board_regdate,board_viewcount, BOARD_DELETEYN,
+                       count(1) OVER() as total_count,
+                       (row_number() over()) as rownum
+                from BOARDLIST where BOARD_DELETEYN = 'N'
+                group by BOARD_NO ORDER BY BOARD_NO desc
             ) A FULL JOIN FILE B
                           ON A.BOARD_NO = B.BOARD_NO_FK
-        WHERE ROWNUM BETWEEN 1 AND 10
-          AND A.BOARD_DELETEYN = 'N'
-        ORDER BY ROWNUM DESC
+        where rownum between 1 and 10
+        ORDER BY rownum DESC;
     </select>
 
     <!--2.등록-->
@@ -97,27 +87,29 @@
 
     <!-- List Page CNT-->
     <select id="boardPageAjaxList"  resultType="BoardDTO">
-        SELECT *
-        FROM(
-                SELECT BOARD_NO
-                     , BOARD_TITLE
-                     , BOARD_CONTENT
-                     , BOARD_WRITER
-                     , BOARD_REGDATE
-                     , BOARD_VIEWCOUNT
-                     , BOARD_PW
-                     , BOARD_MODIDATE
-                     , BOARD_DELETEYN
-                     , COUNT(1) OVER() AS TOTAL_COUNT,
-                    (ROW_NUMBER() OVER()) AS ROWNUM
-                FROM BOARDLIST
-                GROUP BY BOARD_NO
-                ORDER BY BOARD_NO DESC
+                select A.board_no,A.board_title,A.board_content,A.board_writer,A.board_regdate,A.board_viewcount,A.BOARD_DELETEYN,A.total_count,(total_count+1)-A.ROWNUM as rownum,B.*
+        from(
+                select board_no, board_title,board_content,board_writer,board_regdate,board_viewcount, BOARD_DELETEYN,
+                       count(1) OVER() as total_count,
+                       (row_number() over()) as rownum
+                from BOARDLIST where BOARD_DELETEYN = 'N' and
+                    <if test='searchField == "writer"'>
+                        board_writer like '%'||#{searchText}||'%'
+                    </if>
+                    <if test='searchField == "title"'>
+                        board_title like '%'||#{searchText}||'%'
+                    </if>
+
+                    <if test='searchField == ""'>
+                        board_writer like '%'||#{searchText}||'%' or
+                        board_title like '%'||#{searchText}||'%'
+                    </if>
+                group by BOARD_NO ORDER BY BOARD_NO desc
             ) A FULL JOIN FILE B
                           ON A.BOARD_NO = B.BOARD_NO_FK
-        WHERE ROWNUM BETWEEN #{startRow} and #{endRow}
-          AND A.BOARD_DELETEYN = 'N'
-        ORDER BY ROWNUM DESC
+        where rownum between #{startRow} and #{endRow} and
+
+        ORDER BY rownum DESC;
     </select>
 
 </mapper>

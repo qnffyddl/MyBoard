@@ -39,5 +39,7 @@ public class BoardDTO extends CommonDTO{
   private String fileName;
   private String filePath;
   private String fileMount;
+  private String searchField;
+  private String searchText;
 }
 //Dto 데이터 전송 그냥 형식
