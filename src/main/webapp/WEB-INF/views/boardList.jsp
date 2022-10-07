@@ -74,7 +74,7 @@
                             <td>${list.boardWriter}</td>
                             <td>${list.boardRegdate}</td>
                             <td>
-                                <c:if test="${list.fileNo ne null}"><img src="../image/free-icon-attachments-304690.png"></c:if>
+                                <c:if test="${list.boardNoFk ne 0}"><img src="../image/free-icon-attachments-304690.png"></c:if>
                             </td>
                             <td>${list.boardViewcount}</td>
                         </tr>
@@ -208,7 +208,7 @@
 
         list.forEach((item,index) => {//item 별칭을 줘서 리스트 값을 뽑아올수있다. 리스트로 반복문을 태워서 /한행정보가 반복문 타서
 
-           if(item.fileNo != null){
+           if(item.boardNoFk != 0){
                imgYn = '<img src="../image/free-icon-attachments-304690.png">';
            }else{
                imgYn = '';

@@ -56,6 +56,7 @@
         formData.append("boardPw", "${boardPw}");
         formData.append("boardWriter", "${boardWriter}");
         formData.append("PageGubun", "${PageGubun}");
+        formData.append("fileInfo", "${fileInfo}");
 
         //dto에 필수 값으로 값을 넘겨줘야해서 다른 값들도 넣어줬습니다.
         //ajax로 파일전송 폼데이터를 보내기위해

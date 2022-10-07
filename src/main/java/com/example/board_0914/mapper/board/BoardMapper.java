@@ -1,12 +1,13 @@
 package com.example.board_0914.mapper.board;
 
 import com.example.board_0914.dto.BoardDTO;
+import com.example.board_0914.dto.FileDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
-public interface boardMapper {
+public interface BoardMapper {
   //중간 선언이라고 생각하면 됨.
 
   //1.조회
@@ -33,4 +34,7 @@ public interface boardMapper {
   //
   List<BoardDTO> boardPageAjaxList(BoardDTO boardDTO);
 
+  void insertBoardFileList(FileDTO fileDTO) throws Exception;
+
+  List<FileDTO> selectBoardFileList(int boardNo) throws Exception;
 }

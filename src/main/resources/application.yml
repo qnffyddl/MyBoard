@@ -16,14 +16,30 @@ server:
 
 # application.properties
 
+#spring:
+#  datasource:
+#    hikari:
+#      maximum-pool-size: 4
+#      jdbc-url: jdbc:postgresql://localhost:5432/postgres
+#      username: postgres
+#      password: 1234
+#      driver-class-name: org.postgresql.Driver
+#  mvc:
+#    view:
+#      prefix: /WEB-INF/views/
+#      suffix: .jsp
+#
+#mybatis:
+#  type-aliases-package: com.example.board_0914.dto
+
 spring:
   datasource:
     hikari:
       maximum-pool-size: 4
-      jdbc-url: jdbc:postgresql://localhost:5432/postgres
+      jdbc-url: jdbc:log4jdbc:postgresql://localhost:5432/postgres?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
       username: postgres
       password: 1234
-      driver-class-name: org.postgresql.Driver
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
   mvc:
     view:
       prefix: /WEB-INF/views/

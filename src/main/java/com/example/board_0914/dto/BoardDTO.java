@@ -7,11 +7,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @Valid
 public class BoardDTO extends CommonDTO{
+  private List<FileDTO> fileList;
+
   private int boardNo;
 
   @NotNull(message = "제목 입력은 필수입니다.")

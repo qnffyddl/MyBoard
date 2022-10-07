@@ -25,7 +25,7 @@
     <title>게시글 상세화면</title>
 </head>
 <body>
-<form name="boardForm" class="center" method="post">
+<form name="boardForm" class="center" method="post" enctype="multipart/form-data">
     <h2>게시글 상세화면</h2>
     <input id ="boardNo" type="hidden" class="form-control" name="boardNo" value="${boardDetail.boardNo}"/>
     <div class="form-group">
@@ -45,10 +45,29 @@
         <input id ="boardRegdate" type="text" class="form-control" name="boardRegdate" value="${boardDetail.boardRegdate}" disabled="true"/>
     </div>
     <div class="form-group">
+        <c:forEach items="${boardDetail.fileList}" var="boardDto" varStatus="status">
+            <c:if test="${status.index == 0}"> <%--쉼표 안붙이고--%>
+                <c:set var="fileNameTextBox" value="${fileNameTextBox} ${boardDto.fileName}"/>
+            </c:if>
+            <c:if test="${status.index != 0}"> <%--쉼표 붙이고--%>
+                <c:set var="fileNameTextBox" value="${fileNameTextBox}, ${boardDto.fileName}"/>
+            </c:if>
+        </c:forEach>
+        <label>파일</label>
+        <div class=class="form-control">
+            <input class="form-control" id="boardfile" name="boardfile" type="file"  multiple="multiple"/>
+        </div><br>
+        <label>업로드된 파일</label>
+        <div>
+            ${fileNameTextBox}
+        </div>
+    </div>
+    <div class="form-group">
         <input id ="boardPw" type="hidden" class="form-control" name="boardPw" value="${boardDetail.boardPw}"/>
     </div>
 
     <input id ="PageGubun" type="hidden" class="form-control" name="PageGubun"/>
+
 
     <button id="btn_save" type="button" class="btn btn-outline-info" onclick="boardPwPop('U')">저장</button>
     <button id="btn_delete" type="button" class="btn btn-outline-info" onclick="boardPwPop('D')">삭제</button>

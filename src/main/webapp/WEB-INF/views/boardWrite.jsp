@@ -25,7 +25,7 @@
     <title>게시글 등록</title>
 </head>
 <body>
-<form name=form class="center" method="post">
+<form id="form" name="form" class="center" method="post" enctype="multipart/form-data">
     <h2>게시글 등록</h2>
     <div class="form-group">
         <label>제목</label>
@@ -42,6 +42,12 @@
     <div class="form-group">
         <label>작성자</label>
         <input id ="boardWriter" type="text" class="form-control" name="boardWriter" placeholder="작성자 입력">
+    </div>
+    <div class="form-group">
+        <label>파일</label>
+        <div class=class="form-control">
+            <input id="boardFile" type="file" class="form-control"  name="boardFile" multiple="multiple"/>
+        </div>
     </div>
 
     <button id="btn_register" type="button" class="btn btn-outline-info">등록</button>
@@ -86,19 +92,22 @@
         //jquery val() : Form Element 의 값을 받아오는데 쓰인다. (주로 input 이나 textarea 정도?)- 주의해야할 점은 Form Element 이외의 값은 받아오질 못한다는 점.
         //문자열 좌우에서 공백을 제거하는 함수가 trim() 함수 입니다.
         //input에 들어온 값을 넣어
-        const boardTitle = $("#boardTitle").val().trim();
-        const boardContent = $("#boardContent").val().trim();
-        const boardPw = $("#boardPw").val().trim();
-        const boardWriter = $("#boardWriter").val().trim();
+        // const boardTitle = $("#boardTitle").val().trim();
+        // const boardContent = $("#boardContent").val().trim();
+        // const boardPw = $("#boardPw").val().trim();
+        // const boardWriter = $("#boardWriter").val().trim();
+        const boardFile = $("#form")[0];
+        console.log( $("#form")[0].elements[4].value);
 
         //ajax 통신을 사용해 서버에 데이터를 전송하기 위해
         //폼데이터 객체를 생성함
         //jquery의 append를 통해서 프로퍼티에 바인딩이 가능하도록 세팅한다..append()선택된 요소의 마지막에 새로운 요소나 콘텐츠를 추가한다.
-        var formData = new FormData();
-        formData.append("boardTitle", boardTitle);
-        formData.append("boardContent", boardContent);
-        formData.append("boardPw", boardPw);
-        formData.append("boardWriter", boardWriter);
+        var formData = new FormData(boardFile);
+        // formData.append("boardTitle", boardTitle);
+        // formData.append("boardContent", boardContent);
+        // formData.append("boardPw", boardPw);
+        // formData.append("boardWriter", boardWriter);
+        //formData.append("boardFile", boardFile);
 
         //ajax로 파일전송 폼데이터를 보내기위해
         //enctype, processData, contentType 이 세가지를 반드시 세팅해야한다.
@@ -112,7 +121,7 @@
             type : "POST",
             success : function(res) {
                 alert('게시글 등록 완료');
-                location.href = "./boardList";
+                //location.href = "./boardList";
             },
             error :  function(res) {
                 alert('게시글 등록 실패');

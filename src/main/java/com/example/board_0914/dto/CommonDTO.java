@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CommonDTO {
+public class CommonDTO{
 
   private String PageGubun;     //페이지 구분 U, D
   private int page;             // 현재 페이지 번호
