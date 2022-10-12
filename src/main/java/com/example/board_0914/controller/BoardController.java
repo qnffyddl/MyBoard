@@ -3,6 +3,7 @@ package com.example.board_0914.controller;
 import com.example.board_0914.dto.BoardDTO;
 import com.example.board_0914.service.board.BoardService;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,7 +58,7 @@ public class BoardController {
     return "boardDetail";
   }
 
-  
+
   //4.게시판 수정 PW팝업
   @PostMapping("/boardPwPop")
   public String boardPwPop(BoardDTO boardDto, Model model, MultipartHttpServletRequest multipartHttpServletRequest){
@@ -65,6 +66,7 @@ public class BoardController {
     try {
       // model.addAttribute("BoardDTO", boardDto);
       List<MultipartFile> multipartFile = multipartHttpServletRequest.getFiles("boardfile");
+      JSONArray jsonArray = new JSONArray();
 
       model.addAttribute("boardNo", boardDto.getBoardNo());
       model.addAttribute("boardTitle", boardDto.getBoardTitle());
@@ -72,7 +74,7 @@ public class BoardController {
       model.addAttribute("boardWriter", boardDto.getBoardWriter());
       model.addAttribute("boardPw", boardDto.getBoardPw());
       model.addAttribute("PageGubun", boardDto.getPageGubun());//화면으로 모델에 이 이름으로 값을 저장
-      model.addAttribute("fileInfo", multipartFile);
+      model.addAttribute("fileList", jsonArray.fromObject(multipartFile));
     } catch (Exception e) {
       //log.error(e.toString());
     }

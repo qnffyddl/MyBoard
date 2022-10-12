@@ -102,7 +102,7 @@ public class BoardServiceImpl implements BoardService {
     return boardMapper.boardPwPop(boardDTO);
   }
 
-  //
+  //페이징
   @Override
   public List<BoardDTO> boardPageAjaxList(BoardDTO boardDTO) {
     return boardMapper.boardPageAjaxList(boardDTO);

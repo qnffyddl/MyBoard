@@ -91,11 +91,7 @@
         //데이터를 담아내는 부분 상수 const로
         //jquery val() : Form Element 의 값을 받아오는데 쓰인다. (주로 input 이나 textarea 정도?)- 주의해야할 점은 Form Element 이외의 값은 받아오질 못한다는 점.
         //문자열 좌우에서 공백을 제거하는 함수가 trim() 함수 입니다.
-        //input에 들어온 값을 넣어
-        // const boardTitle = $("#boardTitle").val().trim();
-        // const boardContent = $("#boardContent").val().trim();
-        // const boardPw = $("#boardPw").val().trim();
-        // const boardWriter = $("#boardWriter").val().trim();
+
         const boardFile = $("#form")[0];
         console.log( $("#form")[0].elements[4].value);
 
@@ -103,11 +99,6 @@
         //폼데이터 객체를 생성함
         //jquery의 append를 통해서 프로퍼티에 바인딩이 가능하도록 세팅한다..append()선택된 요소의 마지막에 새로운 요소나 콘텐츠를 추가한다.
         var formData = new FormData(boardFile);
-        // formData.append("boardTitle", boardTitle);
-        // formData.append("boardContent", boardContent);
-        // formData.append("boardPw", boardPw);
-        // formData.append("boardWriter", boardWriter);
-        //formData.append("boardFile", boardFile);
 
         //ajax로 파일전송 폼데이터를 보내기위해
         //enctype, processData, contentType 이 세가지를 반드시 세팅해야한다.

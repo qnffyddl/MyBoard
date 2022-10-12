@@ -12,25 +12,41 @@
 
     <!--1.조회-->
     <select id="boardDTOList"  resultType="BoardDTO">
-        select distinct A.board_no,A.board_title,A.board_content,A.board_writer,A.board_regdate,A.board_viewcount,A.BOARD_DELETEYN,A.total_count
-                      ,(total_count+1)-A.ROWNUM as rownum, B.board_no_fk, B.delete_yn
-        from(
-                select board_no, board_title,board_content,board_writer,board_regdate,board_viewcount, BOARD_DELETEYN,
-                       count(1) OVER() as total_count,
-                       (row_number() over()) as rownum
-                from BOARDLIST where BOARD_DELETEYN = 'N'
-                group by BOARD_NO ORDER BY BOARD_NO desc
-            ) A FULL JOIN (select * from FILE where delete_YN= 'N') B
-                          ON A.BOARD_NO = B.BOARD_NO_FK
-        where rownum between 1 and 10
-        ORDER BY rownum DESC;
+        SELECT DISTINCT
+                          A.BOARD_NO
+                        , A.BOARD_TITLE
+                        , A.BOARD_CONTENT
+                        , A.BOARD_WRITER
+                        , A.BOARD_REGDATE
+                        , A.BOARD_VIEWCOUNT
+                        , A.BOARD_DELETEYN
+                        , A.TOTAL_COUNT
+                        , (TOTAL_COUNT+1)-A.ROWNUM AS ROWNUM
+                        , B.BOARD_NO_FK, B.DELETE_YN
+        FROM(
+                SELECT
+                         BOARD_NO
+                       , BOARD_TITLE
+                       , BOARD_CONTENT
+                       , BOARD_WRITER
+                       , BOARD_REGDATE
+                       , BOARD_VIEWCOUNT
+                       , BOARD_DELETEYN
+                       , COUNT(1) OVER() AS TOTAL_COUNT
+                       , (ROW_NUMBER() OVER()) AS ROWNUM
+                FROM BOARDLIST WHERE BOARD_DELETEYN = 'N'
+                GROUP BY BOARD_NO ORDER BY BOARD_NO DESC
+            ) A
+            FULL JOIN (SELECT * FROM FILE WHERE DELETE_YN= 'N') B ON A.BOARD_NO = B.BOARD_NO_FK
+        WHERE ROWNUM BETWEEN 1 AND 10
+        ORDER BY ROWNUM DESC;
     </select>
 
     <!--2.등록-->
     <insert id="boardWrite" parameterType="BoardDTO" useGeneratedKeys="true" keyProperty="boardNo">
         INSERT INTO BOARDLIST
         (
-            BOARD_TITLE
+              BOARD_TITLE
             , BOARD_CONTENT
             , BOARD_WRITER
             , BOARD_REGDATE
@@ -38,13 +54,13 @@
             , BOARD_PW
             , BOARD_DELETEYN
         ) VALUES (
-                     #{boardTitle}
-                 ,  #{boardContent}
-                 ,  #{boardWriter}
-                 ,  NOW()
-                 ,  0
-                 ,  #{boardPw}
-                 ,  'N'
+                   #{boardTitle}
+                 , #{boardContent}
+                 , #{boardWriter}
+                 , NOW()
+                 , 0
+                 , #{boardPw}
+                 , 'N'
                  )
     </insert>
 
@@ -87,16 +103,17 @@
 
     <!-- List Page CNT-->
     <select id="boardPageAjaxList"  resultType="BoardDTO">
-        SELECT DISTINCT A.BOARD_NO
-             , A.BOARD_TITLE
-             , A.BOARD_CONTENT
-             , A.BOARD_WRITER
-             , A.BOARD_REGDATE
-             , A.BOARD_VIEWCOUNT
-             , A.BOARD_DELETEYN
-             , A.TOTAL_COUNT
-             , (TOTAL_COUNT+1)-A.ROWNUM AS ROWNUM
-             , B.BOARD_NO_FK
+        SELECT DISTINCT
+                           A.BOARD_NO
+                         , A.BOARD_TITLE
+                         , A.BOARD_CONTENT
+                         , A.BOARD_WRITER
+                         , A.BOARD_REGDATE
+                         , A.BOARD_VIEWCOUNT
+                         , A.BOARD_DELETEYN
+                         , A.TOTAL_COUNT
+                         , (TOTAL_COUNT+1)-A.ROWNUM AS ROWNUM
+                         , B.BOARD_NO_FK
         FROM
             (
                 SELECT BOARD_NO
@@ -120,41 +137,45 @@
                        AND BOARD_TITLE LIKE '%'||#{searchText}||'%'
                     </if>
                 GROUP BY BOARD_NO ORDER BY BOARD_NO DESC
-            ) A FULL JOIN (SELECT * FROM FILE WHERE DELETE_YN = 'N') B
-                          ON A.BOARD_NO = B.BOARD_NO_FK
+            ) A
+                FULL JOIN (SELECT * FROM FILE WHERE DELETE_YN = 'N') B ON A.BOARD_NO = B.BOARD_NO_FK
         WHERE ROWNUM BETWEEN #{startRow} AND #{endRow}
         ORDER BY ROWNUM DESC
     </select>
+
+    <!--파일 등록-->
     <insert id="insertBoardFileList" parameterType="FileDTO">
-        INSERT INTO FILE  (
-            BOARD_NO_FK
-            , FILE_NAME
-            , FILE_PATH
-            , FILE_MOUNT
-            , delete_YN
+        INSERT INTO FILE
+            (
+                  BOARD_NO_FK
+                , FILE_NAME
+                , FILE_PATH
+                , FILE_MOUNT
+                , delete_YN
             )
         VALUES
                 (
-                #{boardNoFk}
-                , #{fileName}
-                , #{filePath}
-                , #{fileMount}
-                , 'N'
+                    #{boardNoFk}
+                    , #{fileName}
+                    , #{filePath}
+                    , #{fileMount}
+                    , 'N'
                 )
     </insert>
 
+    <!--상세정보에 나오는 파일정보 -->
     <select id="selectBoardFileList" parameterType="int" resultType="FileDTO">
         SELECT
-            file_no
-             , board_no_fk
-             , file_name
-             , to_char(ROUND(file_mount/1024), 'FM999,999,999') AS file_mount
-             , delete_yn
+                   FILE_NO
+                 , BOARD_NO_FK
+                 , FILE_NAME
+                 , TO_CHAR(ROUND(FILE_MOUNT/1024), 'FM999,999,999') AS FILE_MOUNT
+                 , DELETE_YN
         FROM
-            file
+            FILE
         WHERE
-            delete_yn = 'N'
+            DELETE_YN = 'N'
             AND
-            board_no_fk = #{boardNo}
+            BOARD_NO_FK = #{boardNo}
 	</select>
 </mapper>

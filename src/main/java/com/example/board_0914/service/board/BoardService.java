@@ -31,7 +31,7 @@ public interface BoardService {
   //팝업
   BoardDTO boardPwPop(BoardDTO boardDTO) throws Exception;
 
-  //
+  //페이징
   List<BoardDTO> boardPageAjaxList(BoardDTO boardDTO) throws Exception;
 
 }

@@ -184,12 +184,9 @@
                      $("#paging").append('<a onclick="pageListNum('+nextPageNum+')"> <img src="../image/page_next.png"> </a>'); //다음버튼
                      $("#paging").append('<a onclick="pageListNum('+pageTotal+')"> <img src="../image/page_nnext.png"></a>'); //제일 끝으로 버튼
                  }
-
-
-
-                console.log("토탈"+pageTotal);
-                console.log("시작페이지"+startPageNum);
-                console.log("끝페이지"+endPageNum);
+                //console.log("토탈"+pageTotal);
+                //console.log("시작페이지"+startPageNum);
+                //console.log("끝페이지"+endPageNum);
             },
             error :  function(res) {
                 alert('게시글 등록 실패');
@@ -225,7 +222,7 @@
             </tr>`;
         });
 
-        console.log(contents);
+        //console.log(contents);
         return contents;
     }
 </script>

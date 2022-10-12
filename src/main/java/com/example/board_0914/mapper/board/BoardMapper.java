@@ -31,8 +31,9 @@ public interface BoardMapper {
   //팝업
   BoardDTO boardPwPop(BoardDTO boardDTO);
 
-  //
+  //페이징
   List<BoardDTO> boardPageAjaxList(BoardDTO boardDTO);
+
 
   void insertBoardFileList(FileDTO fileDTO) throws Exception;
 
